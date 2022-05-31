@@ -1,71 +1,92 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Input from '../components/Input';
-import InputCheckbox from '../components/InputCheckbox';
+import Input from '../../components/Input';
+import InputCheckbox from '../../components/InputCheckbox';
 import {
   validateEmail, validatePhone,
   validatePassword, validateConfirmPassword,
   validateUsername,
   validateReferralUsername
-} from '../utils/validation';
-import { User } from '../types/user.type';
+} from '../../utils/validation';
+import { User } from '../../types/user.type';
 
 const normalizePhone = (phone: string) => {
   return phone.replace(/[^0-9]/g, '');
 };
 
-const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (user: User) => void }) => {
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [username, setUsername] = useState('');
-  const [referralUsername, setReferralUsername] = useState('');
-  const [checkTerms, setCheckTerms] = useState(false);
-  const [checkPrivacy, setCheckPrivacy] = useState(false);
-  const [checkMarketing, setCheckMarketing] = useState(false);
+type FormData = {
+	email: string;
+  password: string;
+  confirmPassword: string;
+	phone: string;
+	username: string;
+  referralUsername: string;
+  isAllAgree: boolean;
+	isTermsAgree: boolean;
+	isPrivacyAgree: boolean;
+	isMarketingAgree: boolean;
+}
 
-  const [isEmailValid, setIsEmailValid] = useState(false);
-  const [isPhoneValid, setIsPhoneValid] = useState(false);
-  const [isPasswordValid, setIsPasswordValid] = useState(false);
-  const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(false);
-  const [isUsernameValid, setIsUsernameValid] = useState(false);
-  const [isReferralUsernameValid, setIsReferralUsernameValid] = useState(false);
-  const [isCheckAll, setIsCheckAll] = useState(false);
-  const [isCheckTermsValid, setIsCheckTermsValid] = useState(false);
-  const [isCheckPrivacyValid, setIsCheckPrivacyValid] = useState(false);
+type Validations = {
+  email: boolean;
+  password: boolean;
+  confirmPassword: boolean;
+  phone: boolean;
+  username: boolean;
+  referralUsername: boolean;
+  isTermsAgree: boolean;
+  isPrivacyAgree: boolean;
+}
+
+const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (user: User) => void }) => {
+  const [formData, setFormData] = useState<FormData>({
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: '',
+    username: '',
+    referralUsername: '',
+    isAllAgree: false,
+    isTermsAgree: false,
+    isPrivacyAgree: false,
+    isMarketingAgree: false,
+  });
+
+  const [isValid, setIsValid] = useState<Validations>({
+    email: false,
+    password: false,
+    confirmPassword: false,
+    phone: false,
+    username: false,
+    referralUsername: false,
+    isTermsAgree: false,
+    isPrivacyAgree: false,
+  });
 
   const [showAllMessage, setShowAllMessage] = useState(false);
 
   const validateEveryField = () => {
-    const isEmailValid = validateEmail(email);
-    setIsEmailValid(isEmailValid);
-    const isPhoneValid = validatePhone(normalizePhone(phone));
-    setIsPhoneValid(isPhoneValid);
-    const isPasswordValid = validatePassword(password);
-    setIsPasswordValid(isPasswordValid);
-    const isConfirmPasswordValid = validateConfirmPassword(password, confirmPassword);
-    setIsConfirmPasswordValid(isConfirmPasswordValid);
-    const isUsernameValid = validateUsername(username);
-    setIsUsernameValid(isUsernameValid);
-    if (referralUsername) {
-      const isReferralUsernameValid = validateReferralUsername(referralUsername);
-      setIsReferralUsernameValid(isReferralUsernameValid);
-    } else {
-      setIsReferralUsernameValid(true);
-    }
-    const isCheckTermsValid = checkTerms;
-    setIsCheckTermsValid(isCheckTermsValid);
-    const isCheckPrivacyValid = checkPrivacy;
-    setIsCheckPrivacyValid(isCheckPrivacyValid);
+    setIsValid({
+      email: validateEmail(formData.email),
+      password: validatePassword(formData.password),
+      confirmPassword: validateConfirmPassword(formData.password, formData.confirmPassword),
+      phone: validatePhone(formData.phone),
+      username: validateUsername(formData.username),
+      referralUsername: (formData.referralUsername === '') ? true : validateReferralUsername(formData.referralUsername),
+      isTermsAgree: formData.isTermsAgree,
+      isPrivacyAgree: formData.isPrivacyAgree,
+    });
 
-    console.table({
-      isEmailValid, isPhoneValid, isPasswordValid, isConfirmPasswordValid, isUsernameValid, isReferralUsernameValid, isCheckTermsValid, isCheckPrivacyValid
-    })
-    return isEmailValid && isPhoneValid && isPasswordValid && isConfirmPasswordValid && isUsernameValid && isReferralUsernameValid && isCheckTermsValid && isCheckPrivacyValid;
+    console.table(isValid);
+    return Object.values(isValid).every(v => v === true);
   }
 
   const navigate = useNavigate();
+
+  const getReferralUserId = (username: string) => {
+    const user = users.find(user => user.username === username);
+    return user ? user.id : null;
+  }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -74,13 +95,13 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
       console.log('submit');
       const user: User = {
         id: users.length + 1,
-        email,
-        phone,
-        username,
-        referralUserId: null,
-        isTermsAccepted: checkTerms,
-        isPrivacyAccepted: checkPrivacy,
-        isMarketingAccepted: checkMarketing,
+        email: formData.email,
+        phone: normalizePhone(formData.phone),
+        username: formData.username,
+        referralUserId: getReferralUserId(formData.referralUsername),
+        isTermsAgree: formData.isTermsAgree,
+        isPrivacyAgree: formData.isPrivacyAgree,
+        isMarketingAgree: formData.isMarketingAgree,
         createdAt: new Date(),
       };
       handleSignup(user);
@@ -88,7 +109,7 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
     } else {
       console.log('invalid');
     }
-    console.table({email, phone, password, confirmPassword, username, referralUsername, checkTerms, checkPrivacy, checkMarketing})
+    console.table(formData);
   };
 
   return (
@@ -99,10 +120,10 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           name='email'
           label='이메일'
           type='email'
-          value={email}
-          setValue={setEmail}
-          isValid={isEmailValid}
-          setIsValid={setIsEmailValid}
+          value={formData.email}
+          setValue={(value) => setFormData({ ...formData, email: value })}
+          isValid={isValid.email}
+          setIsValid={(valid) => setIsValid({ ...isValid, email: valid })}
           validation={validateEmail}
           validationMessage={{
             required: '이메일을 입력해주세요.',
@@ -116,10 +137,10 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           name='phone'
           label='전화번호'
           type='tel'
-          value={phone}
-          setValue={setPhone}
-          isValid={isPhoneValid}
-          setIsValid={setIsPhoneValid}
+          value={formData.phone}
+          setValue={(value) => setFormData({ ...formData, phone: value })}
+          isValid={isValid.phone}
+          setIsValid={(valid) => setIsValid({ ...isValid, phone: valid })}
           validation={validatePhone}
           validationMessage={{
             required: '전화번호를 입력해주세요.',
@@ -134,10 +155,10 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           name='password'
           label='비밀번호'
           type='password'
-          value={password}
-          setValue={setPassword}
-          isValid={isPasswordValid}
-          setIsValid={setIsPasswordValid}
+          value={formData.password}
+          setValue={(value) => setFormData({ ...formData, password: value })}
+          isValid={isValid.password}
+          setIsValid={(valid) => setIsValid({ ...isValid, password: valid })}
           validation={validatePassword}
           validationMessage={{
             required: '비밀번호를 입력해주세요.',
@@ -152,11 +173,11 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           name='confirmPassword'
           label='비밀번호 확인'
           type='password'
-          value={confirmPassword}
-          setValue={setConfirmPassword}
-          isValid={isConfirmPasswordValid}
-          setIsValid={setIsConfirmPasswordValid}
-          validation={() => validateConfirmPassword(password, confirmPassword)}
+          value={formData.confirmPassword}
+          setValue={(value) => setFormData({ ...formData, confirmPassword: value })}
+          isValid={isValid.confirmPassword}
+          setIsValid={(valid) => setIsValid({ ...isValid, confirmPassword: valid })}
+          validation={() => validateConfirmPassword(formData.password, formData.confirmPassword)}
           validationMessage={{
             required: '비밀번호를 입력해주세요.',
             format: '비밀번호가 일치하지 않습니다.',
@@ -169,10 +190,10 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           name='username'
           label='사용자명'
           type='text'
-          value={username}
-          setValue={setUsername}
-          isValid={isUsernameValid}
-          setIsValid={setIsUsernameValid}
+          value={formData.username}
+          setValue={(value) => setFormData({ ...formData, username: value })}
+          isValid={isValid.username}
+          setIsValid={(valid) => setIsValid({ ...isValid, username: valid })}
           validation={validateUsername}
           validationMessage={{
             required: '사용자명을 입력해주세요.',
@@ -187,10 +208,10 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           name='referralUsername'
           label='추천인 사용자명'
           type='text'
-          value={referralUsername}
-          setValue={setReferralUsername}
-          isValid={isReferralUsernameValid}
-          setIsValid={setIsReferralUsernameValid}
+          value={formData.referralUsername}
+          setValue={(value) => setFormData({ ...formData, referralUsername: value })}
+          isValid={isValid.referralUsername}
+          setIsValid={(valid) => setIsValid({ ...isValid, referralUsername: valid })}
           validation={validateReferralUsername}
           validationMessage={{
             format: '존재하지 않는 추천자명입니다.',
@@ -201,17 +222,17 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           id='all'
           name='all'
           label='모두 동의합니다'
-          checked={isCheckAll}
-          setChecked={setIsCheckAll}
+          checked={formData.isAllAgree}
+          setChecked={(value) => setFormData({ ...formData, isAllAgree: value })}
         />
         <InputCheckbox
           id='terms'
           name='terms'
           label={<><a href='#'>이용약관</a>에 동의합니다(필수)</>}
-          checked={checkTerms}
-          setChecked={setCheckTerms}
-          isValid={isCheckTermsValid}
-          setIsValid={setIsCheckTermsValid}
+          checked={formData.isTermsAgree}
+          setChecked={(value) => setFormData({ ...formData, isTermsAgree: value })}
+          isValid={isValid.isTermsAgree}
+          setIsValid={(valid) => setIsValid({ ...isValid, isTermsAgree: valid })}
           validation={(value) => value}
           validationMessage='필수 약관에 동의해주세요.'
           showMessage={showAllMessage}
@@ -221,10 +242,10 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           id='privacy'
           name='privacy'
           label={<><a href='#'>개인정보 처리 방침</a>에 동의합니다(필수)</>}
-          checked={checkPrivacy}
-          setChecked={setCheckPrivacy}
-          isValid={isCheckPrivacyValid}
-          setIsValid={setIsCheckPrivacyValid}
+          checked={formData.isPrivacyAgree}
+          setChecked={(value) => setFormData({ ...formData, isPrivacyAgree: value })}
+          isValid={isValid.isPrivacyAgree}
+          setIsValid={(valid) => setIsValid({ ...isValid, isPrivacyAgree: valid })}
           validation={(value) => value}
           validationMessage='필수 약관에 동의해주세요.'
           showMessage={showAllMessage}
@@ -234,8 +255,8 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           id='marketing'
           name='marketing'
           label={["마케팅 메일 수신에 동의합니다(선택)"]}
-          checked={checkMarketing}
-          setChecked={setCheckMarketing}
+          checked={formData.isMarketingAgree}
+          setChecked={(value) => setFormData({ ...formData, isMarketingAgree: value })}
         />
         <div>
           <span>유용한 정보를 보내드려요!</span>
