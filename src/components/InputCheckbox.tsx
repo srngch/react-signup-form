@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 interface InputCheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string | React.ReactNode;
@@ -20,12 +20,6 @@ const Input = ({
   isRequired,
   ...res
 }: InputCheckboxProps) => {
-  useEffect(() => {
-    if (validation) {
-      validation(checked) && setIsValid?.(true);
-    }
-  });
-
   const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { checked } = event.currentTarget;
     setChecked(checked);
