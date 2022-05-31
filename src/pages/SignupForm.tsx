@@ -38,15 +38,15 @@ const SignUpForm = () => {
   const validateEveryField = () => {
     const isEmailValid = validateEmail(email);
     setIsEmailValid(isEmailValid);
-    const isPhoneValid = phone.length === 10;
+    const isPhoneValid = validatePhone(normalizePhone(phone));
     setIsPhoneValid(isPhoneValid);
-    const isPasswordValid = password.length >= 8;
+    const isPasswordValid = validatePassword(password);
     setIsPasswordValid(isPasswordValid);
-    const isConfirmPasswordValid = password === confirmPassword;
+    const isConfirmPasswordValid = validateConfirmPassword(password, confirmPassword);
     setIsConfirmPasswordValid(isConfirmPasswordValid);
-    const isUsernameValid = username.length >= 3;
+    const isUsernameValid = validateUsername(username);
     setIsUsernameValid(isUsernameValid);
-    const isReferralUsernameValid = referralUsername.length >= 3;
+    const isReferralUsernameValid = validateReferralUsername(referralUsername);
     setIsReferralUsernameValid(isReferralUsernameValid);
     const isCheckTermsValid = checkTerms;
     setIsCheckTermsValid(isCheckTermsValid);
