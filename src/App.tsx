@@ -1,5 +1,8 @@
 import React from 'react';
-import SignUpForm from './pages/SignupForm';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import SignupForm from './pages/SignupForm';
+import SignupResult from './pages/SignupResult';
 import './assets/styles/App.css';
 
 function App() {
@@ -10,7 +13,13 @@ function App() {
         <span>Ruth</span>
       </header>
       <main>
-        <SignUpForm />
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Home />}/>
+          <Route path='/signup' element={<SignupForm />}/>
+          <Route path='/signup-result' element={<SignupResult />}/>
+        </Routes>
+        </BrowserRouter>
       </main>
       <footer></footer>
     </div>
