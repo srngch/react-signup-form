@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../components/Input';
-import InputCheckbox from '../../components/InputCheckbox';
+import Agreements from './agreements';
 import {
   validateEmail, validatePhone,
   validatePassword, validateConfirmPassword,
@@ -9,34 +9,11 @@ import {
   validateReferralUsername
 } from '../../utils/validation';
 import { User } from '../../types/user.type';
+import { FormData, Validations } from '../../types/form.type';
 
 const normalizePhone = (phone: string) => {
   return phone.replace(/[^0-9]/g, '');
 };
-
-type FormData = {
-	email: string;
-  password: string;
-  confirmPassword: string;
-	phone: string;
-	username: string;
-  referralUsername: string;
-  isAllAgree: boolean;
-	isTermsAgree: boolean;
-	isPrivacyAgree: boolean;
-	isMarketingAgree: boolean;
-}
-
-type Validations = {
-  email: boolean;
-  password: boolean;
-  confirmPassword: boolean;
-  phone: boolean;
-  username: boolean;
-  referralUsername: boolean;
-  isTermsAgree: boolean;
-  isPrivacyAgree: boolean;
-}
 
 const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (user: User) => void }) => {
   const [formData, setFormData] = useState<FormData>({
@@ -62,6 +39,8 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
     isTermsAgree: false,
     isPrivacyAgree: false,
   });
+
+
 
   const [showAllMessage, setShowAllMessage] = useState(false);
 
@@ -218,49 +197,13 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           }}
           showMessage={showAllMessage}
         />
-        <InputCheckbox
-          id='all'
-          name='all'
-          label='모두 동의합니다'
-          checked={formData.isAllAgree}
-          setChecked={(value) => setFormData({ ...formData, isAllAgree: value })}
-        />
-        <InputCheckbox
-          id='terms'
-          name='terms'
-          label={<><a href='#'>이용약관</a>에 동의합니다(필수)</>}
-          checked={formData.isTermsAgree}
-          setChecked={(value) => setFormData({ ...formData, isTermsAgree: value })}
-          isValid={isValid.isTermsAgree}
-          setIsValid={(valid) => setIsValid({ ...isValid, isTermsAgree: valid })}
-          validation={(value) => value}
-          validationMessage='필수 약관에 동의해주세요.'
+        <Agreements
+          formData={formData}
+          setFormData={setFormData}
+          isValid={isValid}
+          setIsValid={setIsValid}
           showMessage={showAllMessage}
-          isRequired
         />
-        <InputCheckbox
-          id='privacy'
-          name='privacy'
-          label={<><a href='#'>개인정보 처리 방침</a>에 동의합니다(필수)</>}
-          checked={formData.isPrivacyAgree}
-          setChecked={(value) => setFormData({ ...formData, isPrivacyAgree: value })}
-          isValid={isValid.isPrivacyAgree}
-          setIsValid={(valid) => setIsValid({ ...isValid, isPrivacyAgree: valid })}
-          validation={(value) => value}
-          validationMessage='필수 약관에 동의해주세요.'
-          showMessage={showAllMessage}
-          isRequired
-        />
-        <InputCheckbox
-          id='marketing'
-          name='marketing'
-          label={["마케팅 메일 수신에 동의합니다(선택)"]}
-          checked={formData.isMarketingAgree}
-          setChecked={(value) => setFormData({ ...formData, isMarketingAgree: value })}
-        />
-        <div>
-          <span>유용한 정보를 보내드려요!</span>
-        </div>
         <div>
           <button type='submit'>
             가입하기
