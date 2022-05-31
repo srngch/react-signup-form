@@ -117,11 +117,11 @@ const SignUpForm = () => {
           validation={validatePassword}
           validationMessage={{
             required: '비밀번호를 입력해주세요.',
-            format: '영문/숫자/특수문자 중 2개 이상 조합하여 8자 이상으로 입력해주세요.',
+            format: '영문/숫자/특수문자를 모두 포함하여 8자 이상으로 입력해주세요.',
           }}
           showMessage={showAllMessage}
           isRequired
-          helpMessage='영문/숫자/특수문자 중 2개 이상 조합, 8자 이상'
+          helpMessage='영문/숫자/특수문자 모두 포함, 8자 이상'
           autoComplete= 'off'
         />
         <Input
