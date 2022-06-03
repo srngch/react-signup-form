@@ -48,12 +48,8 @@ const SignUpForm = () => {
     setIsUsernameValid(isUsernameValid);
     const isReferralUsernameValid = validateReferralUsername(referralUsername);
     setIsReferralUsernameValid(isReferralUsernameValid);
-    const isCheckTermsValid = checkTerms;
-    setIsCheckTermsValid(isCheckTermsValid);
-    const isCheckPrivacyValid = checkPrivacy;
-    setIsCheckPrivacyValid(isCheckPrivacyValid);
 
-    return isEmailValid && isPhoneValid && isPasswordValid && isConfirmPasswordValid && isUsernameValid && isReferralUsernameValid && isCheckTermsValid && isCheckPrivacyValid;
+    return isEmailValid && isPhoneValid && isPasswordValid && isConfirmPasswordValid && isUsernameValid && isReferralUsernameValid && checkTerms && isCheckPrivacyValid;
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
