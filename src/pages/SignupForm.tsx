@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import InputCheckbox from '../components/InputCheckbox';
 import {
@@ -7,12 +8,13 @@ import {
   validateUsername,
   validateReferralUsername
 } from '../utils/validation';
+import { User } from '../types/user.type';
 
 const normalizePhone = (phone: string) => {
   return phone.replace(/[^0-9]/g, '');
 };
 
-const SignUpForm = () => {
+const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (user: User) => void }) => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -46,17 +48,43 @@ const SignUpForm = () => {
     setIsConfirmPasswordValid(isConfirmPasswordValid);
     const isUsernameValid = validateUsername(username);
     setIsUsernameValid(isUsernameValid);
-    const isReferralUsernameValid = validateReferralUsername(referralUsername);
-    setIsReferralUsernameValid(isReferralUsernameValid);
+    if (referralUsername) {
+      const isReferralUsernameValid = validateReferralUsername(referralUsername);
+      setIsReferralUsernameValid(isReferralUsernameValid);
+    } else {
+      setIsReferralUsernameValid(true);
+    }
+    const isCheckTermsValid = checkTerms;
+    setIsCheckTermsValid(isCheckTermsValid);
+    const isCheckPrivacyValid = checkPrivacy;
+    setIsCheckPrivacyValid(isCheckPrivacyValid);
 
-    return isEmailValid && isPhoneValid && isPasswordValid && isConfirmPasswordValid && isUsernameValid && isReferralUsernameValid && checkTerms && isCheckPrivacyValid;
+    console.table({
+      isEmailValid, isPhoneValid, isPasswordValid, isConfirmPasswordValid, isUsernameValid, isReferralUsernameValid, isCheckTermsValid, isCheckPrivacyValid
+    })
+    return isEmailValid && isPhoneValid && isPasswordValid && isConfirmPasswordValid && isUsernameValid && isReferralUsernameValid && isCheckTermsValid && isCheckPrivacyValid;
   }
+
+  const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowAllMessage(true);
     if (validateEveryField()) {
       console.log('submit');
+      const user: User = {
+        id: users.length + 1,
+        email,
+        phone,
+        username,
+        referralUserId: null,
+        isTermsAccepted: checkTerms,
+        isPrivacyAccepted: checkPrivacy,
+        isMarketingAccepted: checkMarketing,
+        createdAt: new Date(),
+      };
+      handleSignup(user);
+      navigate('/signup-result', { state: { user }, replace: true });
     } else {
       console.log('invalid');
     }
@@ -213,20 +241,7 @@ const SignUpForm = () => {
           <span>유용한 정보를 보내드려요!</span>
         </div>
         <div>
-          <button
-            type='submit'
-            // disabled={
-            // !isEmailValid ||
-            //   !isPhoneValid ||
-            //   !isPasswordValid ||
-            //   !isConfirmPasswordValid ||
-            //   !isUsernameValid ||
-            //   !isReferralUsernameValid ||
-            //   !isCheckTermsValid ||
-            //   !isCheckPrivacyValid ||
-            //   !isCheckMarketingValid
-            // }
-          >
+          <button type='submit'>
             가입하기
           </button>
         </div>
