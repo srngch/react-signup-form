@@ -5,13 +5,12 @@ const validateEmail = (email: string) => {
 
 const validatePhone = (phone: string) => {
   const re = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
-  return re.test(String(phone).toLowerCase());
+  return re.test(phone);
 };
 
 const validatePassword = (password: string) => {
   const re =
     /^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
-    // /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
   return re.test(String(password));
 };
 
