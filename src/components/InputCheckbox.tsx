@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 interface InputCheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string | React.ReactNode;
@@ -20,15 +20,12 @@ const InputCheckbox = ({
   isRequired,
   ...res
 }: InputCheckboxProps) => {
-  useEffect(() => {
-    if (validation) {
-      validation(checked) && setIsValid?.(true);
-    }
-  });
-
   const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { checked } = event.currentTarget;
     setChecked(checked);
+    if (validation) {
+      setIsValid?.(validation(checked));
+    }
   };
 
   return (
@@ -42,7 +39,7 @@ const InputCheckbox = ({
         {...res}
       />
       <label className='form-check-label' htmlFor={id}>{label}</label>
-      {showMessage && !isValid && <div className='error'>{validationMessage}</div>}
+      {(showMessage && !isValid) && <div className='error'>{validationMessage}</div>}
     </div>
   );
 }

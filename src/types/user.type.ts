@@ -4,9 +4,9 @@ export type User = {
 	phone: string;
 	username: string;
 	referralUserId: number | null;
-	isTermsAccepted: boolean;
-	isPrivacyAccepted: boolean;
-	isMarketingAccepted: boolean;
+	isTermsAgree: boolean;
+	isPrivacyAgree: boolean;
+	isMarketingAgree: boolean;
 	createdAt: Date;
 	updatedAt?: Date | null;
 };
