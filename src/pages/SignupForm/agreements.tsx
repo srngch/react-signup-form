@@ -15,6 +15,22 @@ const Agreements = ({
   isValid, setIsValid,
   showMessage,
 }: AgreementsProps) => {
+  const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const { checked } = event.currentTarget;
+    setFormData({
+      ...formData,
+      isAllAgree: checked,
+      isTermsAgree: checked,
+      isPrivacyAgree: checked,
+      isMarketingAgree: checked
+    });
+    setIsValid({
+      ...isValid,
+      isTermsAgree: checked,
+      isPrivacyAgree: checked,
+    });
+  };
+
   return (
     <fieldset>
       <legend>약관 동의</legend>
@@ -32,6 +48,7 @@ const Agreements = ({
             isMarketingAgree: checked,
           });
         }}
+        onChange={handleChange}
       />
       <InputCheckbox
         id='terms'

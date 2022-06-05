@@ -23,6 +23,9 @@ const InputCheckbox = ({
   const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { checked } = event.currentTarget;
     setChecked(checked);
+    if (validation) {
+      setIsValid?.(validation(checked));
+    }
   };
 
   return (
@@ -36,7 +39,7 @@ const InputCheckbox = ({
         {...res}
       />
       <label className='form-check-label' htmlFor={id}>{label}</label>
-      {showMessage && !isValid && <div className='error'>{validationMessage}</div>}
+      {(showMessage && !isValid) && <div className='error'>{validationMessage}</div>}
     </div>
   );
 }
