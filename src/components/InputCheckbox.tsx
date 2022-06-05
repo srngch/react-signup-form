@@ -13,7 +13,7 @@ interface InputCheckboxProps extends React.InputHTMLAttributes<HTMLInputElement>
   res?: any;
 };
 
-const Input = ({
+const InputCheckbox = ({
   id, name, label, checked, setChecked,
   isValid, setIsValid,
   validation, validationMessage, showMessage,
@@ -41,4 +41,4 @@ const Input = ({
   );
 }
 
-export default Input;
+export default InputCheckbox;
