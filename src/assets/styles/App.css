@@ -51,11 +51,17 @@ header.app-header {
   padding: 0 24px;
 }
 
-.app-header-left {
+.app-header-left a {
   height: 24px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  text-decoration: none;
+  color: var(--font-color);
+}
+
+.app-header-left a:visited {
+  color: var(--font-color);
 }
 
 .app-header-logo {
@@ -104,8 +110,8 @@ header.app-header {
 
 main {
   background-color: var(--bg-color);
-  height: 200vh;
   padding-top: 56px;
+  padding-bottom: 112px;
 }
 
 .main-wrapper {

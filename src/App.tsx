@@ -50,8 +50,10 @@ function App() {
       <header className='app-header'>
         <div className='app-header-wrapper'>
           <div className='app-header-left'>
-            <div className='app-header-logo'>🧰</div>
-            <span className='app-header-name'>Ruth</span>
+            <a href='/'>
+              <div className='app-header-logo'>🧰</div>
+              <span className='app-header-name'>Ruth</span>
+            </a>
           </div>
           <div className="app-header-right">
             <div className="burger-menu">
