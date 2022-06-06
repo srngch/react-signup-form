@@ -204,7 +204,7 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           setIsValid={setIsValid}
           showMessage={showAllMessage}
         />
-        <div>
+        <div className='button-wrapper'>
           <button type='submit'>
             가입하기
           </button>
