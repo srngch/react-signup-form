@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Message from './Message';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -74,9 +75,21 @@ const Input = ({
         onBlur={handleBlur}
         {...res}
       />
-      {showHelp && helpMessage && <div className='help'>{helpMessage}</div>}
-      {(showMessage || isTouched) && value.length === 0 && isRequired && <div className='error'>{validationMessage?.required}</div>}
-      {(showMessage || isTouched) && value.length !== 0 && !isValid && <div className='error'>{validationMessage?.format}</div>}
+      <Message
+        type='help'
+        message={helpMessage}
+        showMessage={showHelp}
+      />
+      <Message
+        type='error'
+        message={validationMessage?.required}
+        showMessage={(showMessage || isTouched) && value.length === 0 && isRequired}
+      />
+      <Message
+        type='error'
+        message={validationMessage?.format}
+        showMessage={(showMessage || isTouched) && value.length !== 0 && !isValid}
+      />
     </div>
   );
 }
