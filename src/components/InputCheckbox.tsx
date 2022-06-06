@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Message from './Message';
 interface InputCheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string | React.ReactNode;
   checked: boolean;
@@ -39,7 +39,11 @@ const InputCheckbox = ({
         {...res}
       />
       <label className='form-check-label' htmlFor={id}>{label}</label>
-      {(showMessage && !isValid) && <div className='error'>{validationMessage}</div>}
+      <Message
+        type='error'
+        message={validationMessage}
+        showMessage={showMessage && !isValid}
+      />
     </div>
   );
 }
