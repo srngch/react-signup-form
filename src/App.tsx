@@ -66,7 +66,7 @@ function App() {
       </header>
       <main>
         <div className="main-wrapper">
-          <BrowserRouter>
+          <BrowserRouter basename={process.env.PUBLIC_URL}>
             <Routes>
               <Route path='/' element={<Home />} />
               <Route path='/signup' element={<SignupForm users={mockUsers} handleSignup={handleSignup}/>} />
