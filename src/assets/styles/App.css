@@ -7,6 +7,7 @@
   --input-border-color: #d9d9d9;
   --color-white: #ffffff;
   --open-color-gray: #868e96;
+  --open-color-light-gray: #f1f3f5;
   --open-color-red: #fa5252;
   --open-color-blue: #228be6;
   --open-color-yellow: #fcc419;
@@ -25,6 +26,8 @@
   min-height: 100vh;
   margin: 0 auto;
   color: var(--font-color);
+  word-break: keep-all;
+  word-wrap: break-word;
 }
 
 header.app-header {
@@ -113,6 +116,7 @@ main {
   max-width: 1024px;
 }
 
+h1,
 .form-title {
   margin-bottom: 32px;
   font-style: normal;
@@ -236,19 +240,47 @@ input.checkbox {
   color: var(--open-color-blue);
 }
 
-button {
-  margin-top: 24px;
+button,
+.button {
+  display: block;
+  margin-top: 12px;
   width: 100%;
   height: 48px;
   border-radius: 5px;
-  border: 1px solid var(--primary-color);
+  border: none;
   padding: 0 16px;
   font-size: 16px;
   font-weight: 700;
   line-height: 48px;
   outline: none;
+  text-align: center;
   text-decoration: none;
   cursor: pointer;
   background-color: var(--primary-color);
   color: var(--font-color);
+}
+
+.button-wrapper {
+  margin-top: 24px;
+}
+
+button.secondary,
+.button.secondary {
+  background-color: var(--open-color-light-gray);
+  color: var(--font-color);
+}
+
+.result-wrapper p {
+  font-size: 1rem;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.result-wrapper code {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.result-wrapper .button-wrapper {
+  margin-top: 48px;
 }
