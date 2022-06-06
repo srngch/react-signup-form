@@ -32,8 +32,8 @@ const Agreements = ({
   };
 
   return (
-    <fieldset>
-      <legend>약관 동의</legend>
+    <fieldset className='agreements'>
+      <legend className='agreements-title'>약관 동의</legend>
       <InputCheckbox
         id='all'
         name='all'
@@ -53,7 +53,7 @@ const Agreements = ({
       <InputCheckbox
         id='terms'
         name='terms'
-        label={<><a href='#'>이용약관</a>에 동의합니다(필수)</>}
+        label={<><a href='/terms' target='_blank'>이용약관</a>에 동의합니다(필수)</>}
         checked={formData.isTermsAgree}
         setChecked={(checked) => {
           setFormData({
@@ -72,7 +72,7 @@ const Agreements = ({
       <InputCheckbox
         id='privacy'
         name='privacy'
-        label={<><a href='#'>개인정보 처리 방침</a>에 동의합니다(필수)</>}
+        label={<><a href='/privacy' target='_blank'>개인정보 처리 방침</a>에 동의합니다(필수)</>}
         checked={formData.isPrivacyAgree}
         setChecked={(checked) => {
           setFormData({
@@ -101,8 +101,8 @@ const Agreements = ({
           });
         }}
       />
-      <div>
-        <span>메일로 유용한 정보를 보내드려요!</span>
+      <div className='marketing-message'>
+        <span>메일로 유용한 정보를 보내드려요! ✨</span>
       </div>
     </fieldset>
   );

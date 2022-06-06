@@ -94,7 +94,7 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
   return (
     <form onSubmit={handleSubmit}>
       <fieldset>
-        <legend>회원가입</legend>
+        <legend className="form-title">회원가입</legend>
         <Input
           name='email'
           label='이메일'

@@ -64,7 +64,7 @@ const Input = ({
   return (
     <div className={`input-wrapper ${isValid ? 'valid' : ''}`}>
       <label htmlFor={name}>{label}</label>
-      {isRequired && <strong><abbr title='required'>*</abbr></strong>}
+      {isRequired && <abbr className='input-label-required' title='required'>*</abbr>}
       <input
         id={name}
         type={type}
