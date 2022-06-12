@@ -22,7 +22,7 @@
 }
 
 .App {
-  max-width: 1024px;
+  max-width: 425px;
   min-height: 100vh;
   margin: 0 auto;
   color: var(--font-color);
