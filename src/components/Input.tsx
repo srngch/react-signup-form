@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Message from './Message';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -6,8 +6,6 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value: string;
   setValue: (value: string) => void;
   isValid?: boolean;
-  setIsValid?: (isValid: boolean) => void;
-  validation?: (value: string) => boolean;
   validationMessage?: {
     required?: string;
     format?: string;
@@ -20,27 +18,14 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 };
 
 const Input = ({
-  name, label, type, value, setValue,
-  isValid, setIsValid,
-  validation, validationMessage, showMessage,
+  name, label, type,
+  value, setValue, isValid,
+  validationMessage, showMessage,
   isRequired, helpMessage,
   ...res
 }: InputProps) => {
   const [showHelp, setShowHelp] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
-
-  useEffect(() => {
-    if (validation) {
-      const isValid = validation(value);
-      if (isValid === true) {
-        setIsValid?.(true);
-        setShowHelp(false);
-      }
-      if (value.length !== 0 && isValid === false) {
-        setShowHelp(true);
-      }
-    }
-  }, [value, isValid]);
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
@@ -54,11 +39,6 @@ const Input = ({
   const handleBlur = () => {
     setShowHelp(false);
     setIsTouched(true);
-    if (validation) {
-      const isValid = validation(value);
-      console.log(`name: ${name}, value: ${value}, isValid: ${isValid}`);
-      setIsValid?.(isValid);
-    }
   };
 
   return (

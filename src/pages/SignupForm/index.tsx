@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../components/Input';
 import Agreements from './agreements';
@@ -40,6 +40,21 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
     isTermsAgree: false,
     isPrivacyAgree: false,
   });
+
+  useEffect(() => {
+    const { email, password, confirmPassword, phone, username, referralUsername, isTermsAgree, isPrivacyAgree } = formData;
+
+    setIsValid({
+      email: validateEmail(email),
+      password: validatePassword(password),
+      confirmPassword: validateConfirmPassword(password, confirmPassword),
+      phone: validatePhone(phone),
+      username: validateUsername(username),
+      referralUsername: validateReferralUsername(referralUsername),
+      isTermsAgree,
+      isPrivacyAgree,
+    });
+  }, [formData]);
 
   const [showAllMessage, setShowAllMessage] = useState(false);
 
@@ -101,8 +116,6 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           value={formData.email}
           setValue={(value) => setFormData({ ...formData, email: value })}
           isValid={isValid.email}
-          setIsValid={(valid) => setIsValid({ ...isValid, email: valid })}
-          validation={validateEmail}
           validationMessage={{
             required: '이메일을 입력해주세요.',
             format: '올바른 이메일 형식이 아닙니다.',
@@ -118,8 +131,6 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           value={formData.password}
           setValue={(value) => setFormData({ ...formData, password: value })}
           isValid={isValid.password}
-          setIsValid={(valid) => setIsValid({ ...isValid, password: valid })}
-          validation={validatePassword}
           validationMessage={{
             required: '비밀번호를 입력해주세요.',
             format: '영문/숫자/특수문자를 모두 포함하여 8자 이상으로 입력해주세요.',
@@ -136,8 +147,6 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           value={formData.confirmPassword}
           setValue={(value) => setFormData({ ...formData, confirmPassword: value })}
           isValid={isValid.confirmPassword}
-          setIsValid={(valid) => setIsValid({ ...isValid, confirmPassword: valid })}
-          validation={() => validateConfirmPassword(formData.password, formData.confirmPassword)}
           validationMessage={{
             required: '비밀번호를 입력해주세요.',
             format: '비밀번호가 일치하지 않습니다.',
@@ -153,8 +162,6 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           value={formData.phone}
           setValue={(value) => setFormData({ ...formData, phone: value })}
           isValid={isValid.phone}
-          setIsValid={(valid) => setIsValid({ ...isValid, phone: valid })}
-          validation={validatePhone}
           validationMessage={{
             required: '전화번호를 입력해주세요.',
             format: '올바른 전화번호 형식이 아닙니다.',
@@ -171,8 +178,6 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           value={formData.username}
           setValue={(value) => setFormData({ ...formData, username: value })}
           isValid={isValid.username}
-          setIsValid={(valid) => setIsValid({ ...isValid, username: valid })}
-          validation={validateUsername}
           validationMessage={{
             required: '사용자명을 입력해주세요.',
             format: '영문/숫자만 사용하여 3자 이상 15자 이하로 입력해주세요.',
@@ -189,8 +194,6 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           value={formData.referralUsername}
           setValue={(value) => setFormData({ ...formData, referralUsername: value })}
           isValid={isValid.referralUsername}
-          setIsValid={(valid) => setIsValid({ ...isValid, referralUsername: valid })}
-          validation={validateReferralUsername}
           validationMessage={{
             format: '존재하지 않는 추천자명입니다.',
           }}
