@@ -16,11 +16,12 @@ const normalizePhone = (phone: string) => {
 };
 
 const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (user: User) => void }) => {
+
   const [formData, setFormData] = useState<FormData>({
     email: '',
-    phone: '',
     password: '',
     confirmPassword: '',
+    phone: '',
     username: '',
     referralUsername: '',
     isAllAgree: false,
@@ -39,8 +40,6 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
     isTermsAgree: false,
     isPrivacyAgree: false,
   });
-
-
 
   const [showAllMessage, setShowAllMessage] = useState(false);
 
@@ -113,24 +112,6 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           isRequired
         />
         <Input
-          name='phone'
-          label='전화번호'
-          type='tel'
-          value={formData.phone}
-          setValue={(value) => setFormData({ ...formData, phone: value })}
-          isValid={isValid.phone}
-          setIsValid={(valid) => setIsValid({ ...isValid, phone: valid })}
-          validation={validatePhone}
-          validationMessage={{
-            required: '전화번호를 입력해주세요.',
-            format: '올바른 전화번호 형식이 아닙니다.',
-            duplicated: '이미 사용중인 전화번호입니다.'
-          }}
-          helpMessage='예) 01012345678'
-          showMessage={showAllMessage}
-          isRequired
-        />
-        <Input
           name='password'
           label='비밀번호'
           type='password'
@@ -164,6 +145,24 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           showMessage={showAllMessage}
           isRequired
           autoComplete= 'off'
+        />
+        <Input
+          name='phone'
+          label='전화번호'
+          type='tel'
+          value={formData.phone}
+          setValue={(value) => setFormData({ ...formData, phone: value })}
+          isValid={isValid.phone}
+          setIsValid={(valid) => setIsValid({ ...isValid, phone: valid })}
+          validation={validatePhone}
+          validationMessage={{
+            required: '전화번호를 입력해주세요.',
+            format: '올바른 전화번호 형식이 아닙니다.',
+            duplicated: '이미 사용중인 전화번호입니다.'
+          }}
+          helpMessage='예) 01012345678'
+          showMessage={showAllMessage}
+          isRequired
         />
         <Input
           name='username'
