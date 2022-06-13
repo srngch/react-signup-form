@@ -1,5 +1,7 @@
+import { FormData } from '../types/form.type';
+
 const validateEmail = (email: string) => {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
 };
 
@@ -28,6 +30,26 @@ const validateReferralUsername = (username: string) => {
   return re.test(String(username));
 };
 
+const validateSignUpForm = ({
+  email,
+  password,
+  confirmPassword,
+  phone,
+  username,
+  referralUsername,
+  isTermsAgree,
+  isPrivacyAgree,
+} : FormData) => ({
+  email: validateEmail(email),
+  password: validatePassword(password),
+  confirmPassword: validateConfirmPassword(password, confirmPassword),
+  phone: validatePhone(phone),
+  username: validateUsername(username),
+  referralUsername: referralUsername === '' ? true : validateReferralUsername(referralUsername),
+  isTermsAgree: isTermsAgree === true,
+  isPrivacyAgree: isPrivacyAgree === true,
+});
+
 export {
   validateEmail,
   validatePhone,
@@ -35,4 +57,5 @@ export {
   validateConfirmPassword,
   validateUsername,
   validateReferralUsername,
+  validateSignUpForm
 };

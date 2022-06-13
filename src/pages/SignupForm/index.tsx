@@ -2,12 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../components/Input';
 import Agreements from './agreements';
-import {
-  validateEmail, validatePhone,
-  validatePassword, validateConfirmPassword,
-  validateUsername,
-  validateReferralUsername
-} from '../../utils/validation';
+import { validateSignUpForm } from '../../utils/validation';
 import { User } from '../../types/user.type';
 import { FormData, Validations } from '../../types/form.type';
 
@@ -42,37 +37,10 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
   });
 
   useEffect(() => {
-    const { email, password, confirmPassword, phone, username, referralUsername, isTermsAgree, isPrivacyAgree } = formData;
-
-    setIsValid({
-      email: validateEmail(email),
-      password: validatePassword(password),
-      confirmPassword: validateConfirmPassword(password, confirmPassword),
-      phone: validatePhone(phone),
-      username: validateUsername(username),
-      referralUsername: validateReferralUsername(referralUsername),
-      isTermsAgree,
-      isPrivacyAgree,
-    });
+    setIsValid(validateSignUpForm(formData));
   }, [formData]);
 
   const [showAllMessage, setShowAllMessage] = useState(false);
-
-  const validateEveryField = () => {
-    setIsValid({
-      email: validateEmail(formData.email),
-      password: validatePassword(formData.password),
-      confirmPassword: validateConfirmPassword(formData.password, formData.confirmPassword),
-      phone: validatePhone(formData.phone),
-      username: validateUsername(formData.username),
-      referralUsername: (formData.referralUsername === '') ? true : validateReferralUsername(formData.referralUsername),
-      isTermsAgree: formData.isTermsAgree,
-      isPrivacyAgree: formData.isPrivacyAgree,
-    });
-
-    console.table(isValid);
-    return Object.values(isValid).every(v => v === true);
-  }
 
   const navigate = useNavigate();
 
@@ -84,7 +52,8 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowAllMessage(true);
-    if (validateEveryField()) {
+    const validateEveryField = Object.values(isValid).every(v => v === true);
+    if (validateEveryField) {
       console.log('submit');
       const user: User = {
         id: users.length + 1,
@@ -102,6 +71,7 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
     } else {
       console.log('invalid');
     }
+    console.table(isValid);
     console.table(formData);
   };
 
@@ -203,7 +173,6 @@ const SignUpForm = ({ users, handleSignup }: { users: User[], handleSignup: (use
           formData={formData}
           setFormData={setFormData}
           isValid={isValid}
-          setIsValid={setIsValid}
           showMessage={showAllMessage}
         />
         <div className='button-wrapper'>
