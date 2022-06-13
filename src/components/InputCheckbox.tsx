@@ -7,7 +7,7 @@ interface InputCheckboxProps
   checked: boolean;
   setChecked: (checked: boolean) => void;
   isValid?: boolean;
-  validationMessage?: string;
+  errorMessage?: string;
   showMessage?: boolean;
   isRequired?: boolean;
   res?: any;
@@ -20,7 +20,7 @@ const InputCheckbox = ({
   checked,
   setChecked,
   isValid,
-  validationMessage,
+  errorMessage,
   showMessage,
   isRequired,
   ...res
@@ -56,10 +56,10 @@ const InputCheckbox = ({
         {...res}
       />
       <label className='checkbox-label'>{label}</label>
-      {validationMessage !== undefined && (
+      {errorMessage !== undefined && (
         <Message
           type='error'
-          message={validationMessage}
+          message={errorMessage}
           showMessage={(showMessage || isTouched) && !isValid}
         />
       )}

@@ -6,23 +6,20 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value: string;
   setValue: (value: string) => void;
   isValid?: boolean;
-  validationMessage?: {
-    required?: string;
-    format?: string;
-    duplicated?: string;
-  };
+  messages?: {
+    requiredError?: string;
+    formatError?: string;
+    duplicateError?: string;
+    formatHelp?: string;
+  }
   showMessage?: boolean;
   isRequired?: boolean;
-  helpMessage?: string;
   res?: any;
 };
 
 const Input = ({
-  name, label, type,
-  value, setValue, isValid,
-  validationMessage, showMessage,
-  isRequired, helpMessage,
-  ...res
+  name, label, type, value, setValue, isValid,
+  messages, showMessage, isRequired, ...res
 }: InputProps) => {
   const [showHelp, setShowHelp] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
@@ -57,17 +54,17 @@ const Input = ({
       />
       <Message
         type='help'
-        message={helpMessage}
+        message={messages?.formatHelp}
         showMessage={showHelp}
       />
       <Message
         type='error'
-        message={validationMessage?.required}
+        message={messages?.requiredError}
         showMessage={(showMessage || isTouched) && value.length === 0 && isRequired}
       />
       <Message
         type='error'
-        message={validationMessage?.format}
+        message={messages?.formatError}
         showMessage={(showMessage || isTouched) && value.length !== 0 && !isValid}
       />
     </div>

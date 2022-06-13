@@ -57,7 +57,7 @@ const Agreements = ({
           });
         }}
         isValid={isValid.isTermsAgree}
-        validationMessage='필수 약관에 동의해주세요.'
+        errorMessage='필수 약관에 동의해주세요.'
         showMessage={showMessage}
         isRequired
       />
@@ -74,7 +74,7 @@ const Agreements = ({
           });
         }}
         isValid={isValid.isPrivacyAgree}
-        validationMessage='필수 약관에 동의해주세요.'
+        errorMessage='필수 약관에 동의해주세요.'
         showMessage={showMessage}
         isRequired
       />
