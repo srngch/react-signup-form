@@ -20,31 +20,31 @@ const InputCheckbox = ({
   isRequired,
   ...res
 }: InputCheckboxProps) => {
-  const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const { checked } = event.currentTarget;
-    setChecked(checked);
+  const handleClick = (event:React.FormEvent<HTMLButtonElement>) => {
+    setChecked(!checked);
     if (validation) {
-      setIsValid?.(validation(checked));
+      setIsValid?.(validation(!checked));
     }
-  };
+  }
 
   return (
-    <div className={`input-wrapper ${isValid ? 'valid' : ''}`}>
-      <input
-        id={id}
-        type='checkbox'
-        name={name}
-        checked={checked}
-        onChange={handleChange}
-        {...res}
-      />
-      <label className='form-check-label' htmlFor={id}>{label}</label>
+    <button className={`checkbox-wrapper ${isValid ? 'valid' : ''}`} onClick={handleClick}>
+        <input
+          className='checkbox'
+          id={id}
+          type='checkbox'
+          name={name}
+          checked={checked}
+          defaultChecked={checked}
+          {...res}
+        />
+        <label className='checkbox-label'>{label}</label>
       <Message
         type='error'
         message={validationMessage}
         showMessage={showMessage && !isValid}
       />
-    </div>
+    </button>
   );
 }
 

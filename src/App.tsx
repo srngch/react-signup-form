@@ -47,18 +47,33 @@ function App() {
 
   return (
     <div className='App'>
-      <header className='header'>
-        <div>🧰</div>
-        <span>Ruth</span>
+      <header className='app-header'>
+        <div className='app-header-wrapper'>
+          <div className='app-header-left'>
+            <a href='/'>
+              <div className='app-header-logo'>🧰</div>
+              <span className='app-header-name'>Ruth</span>
+            </a>
+          </div>
+          <div className="app-header-right">
+            <div className="burger-menu">
+              <div className="burger-menu-line"></div>
+              <div className="burger-menu-line"></div>
+              <div className="burger-menu-line"></div>
+            </div>
+          </div>
+        </div>
       </header>
       <main>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/signup' element={<SignupForm users={mockUsers} handleSignup={handleSignup}/>} />
-            <Route path='/signup-result' element={<SignupResult user={user}/>} />
-          </Routes>
-        </BrowserRouter>
+        <div className="main-wrapper">
+          <BrowserRouter>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/signup' element={<SignupForm users={mockUsers} handleSignup={handleSignup}/>} />
+              <Route path='/signup-result' element={<SignupResult user={user}/>} />
+            </Routes>
+          </BrowserRouter>
+        </div>
       </main>
       <footer></footer>
     </div>

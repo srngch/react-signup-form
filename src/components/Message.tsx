@@ -10,7 +10,8 @@ const Message = ({ type, message, showMessage = false }: MassageProps) => {
 	return (
 		<>
 			{showMessage &&
-				<div className={`message ${type}`}>
+				<div className={`input-message ${type}`}>
+					{type === 'error' && <span>⚠️ </span>}
 					<span>{message}</span>
 				</div>
 			}
