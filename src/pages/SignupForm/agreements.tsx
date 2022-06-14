@@ -6,13 +6,12 @@ interface AgreementsProps {
   formData: FormData,
   setFormData: (formData: FormData) => void,
   isValid: Validations,
-  setIsValid: (isValid: Validations) => void,
   showMessage: boolean,
 }
 
 const Agreements = ({
   formData, setFormData,
-  isValid, setIsValid,
+  isValid,
   showMessage,
 }: AgreementsProps) => {
   const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -23,11 +22,6 @@ const Agreements = ({
       isTermsAgree: checked,
       isPrivacyAgree: checked,
       isMarketingAgree: checked
-    });
-    setIsValid({
-      ...isValid,
-      isTermsAgree: checked,
-      isPrivacyAgree: checked,
     });
   };
 
@@ -63,9 +57,7 @@ const Agreements = ({
           });
         }}
         isValid={isValid.isTermsAgree}
-        setIsValid={(valid) => setIsValid({ ...isValid, isTermsAgree: valid })}
-        validation={(value) => value}
-        validationMessage='필수 약관에 동의해주세요.'
+        errorMessage='필수 약관에 동의해주세요.'
         showMessage={showMessage}
         isRequired
       />
@@ -82,9 +74,7 @@ const Agreements = ({
           });
         }}
         isValid={isValid.isPrivacyAgree}
-        setIsValid={(valid) => setIsValid({ ...isValid, isPrivacyAgree: valid })}
-        validation={(value) => value}
-        validationMessage='필수 약관에 동의해주세요.'
+        errorMessage='필수 약관에 동의해주세요.'
         showMessage={showMessage}
         isRequired
       />
